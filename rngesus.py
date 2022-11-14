@@ -296,6 +296,27 @@ async def fight_2(ctx):
     await fight(ctx, 'br')
 
 
+@bot.command(name='ini')
+async def ini(ctx):
+    player = await assign_player(ctx)
+    dexterity = player.stats['zr']
+    roll_result = standard_roll()
+    initiative = []
+
+    for dice in roll_result:
+        initiative.append(dexterity - dice)
+
+    initiative_sum = (total_positive_points(initiative))
+    await ini_roll_message(ctx, player.nickname, dexterity, roll_result, initiative_sum)
+
+
+async def ini_roll_message(ctx, *args):
+    await ctx.send(f'```{args[0]} - inicjatywa:\n'
+                   f'ZR: {args[1]}\n\n'
+                   f'Roll: {args[2]}\n'
+                   f'Punkty: {args[3]}```')
+
+
 @bot.command(name='flirt')
 async def flirt(ctx):
     file = 'random_img/flirt.png'
@@ -349,6 +370,7 @@ async def discord_help(ctx):
                    f'{bot.command_prefix}roll - standard 3d20 roll.\n'
                    f'{bot.command_prefix}roll XdY - roll X dice, Y sided each.\n'
                    f'{bot.command_prefix}roll [ability] [level].\n'
+                   f'{bot.command_prefix}ini - inicjatywa.'
                    f'{bot.command_prefix}fight - bijatyka.\n'
                    f'{bot.command_prefix}FIGHT - broń ręczna.\n```')
 
